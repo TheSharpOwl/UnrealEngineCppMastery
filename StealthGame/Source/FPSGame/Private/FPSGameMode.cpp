@@ -14,3 +14,16 @@ AFPSGameMode::AFPSGameMode()
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
 }
+
+void AFPSGameMode::CompleteMission(APawn* InstigatorPawn)
+{
+	if(InstigatorPawn)
+	{
+		// we don't need the player controller to be enabelled (you can check the implementation of the function
+		// disables only game play input stuff
+		InstigatorPawn->DisableInput(nullptr);
+	}
+	//blueprint funciton
+	OnMissionCompleted(InstigatorPawn);
+}
+
