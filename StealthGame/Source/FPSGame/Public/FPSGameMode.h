@@ -11,6 +11,15 @@ class AFPSGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+protected:
+
+	/*
+	 * it's something like a filter so we can add only add objects
+	 * which belong to aactor class when calling GetAllActorsOfClass in the .cpp file
+	*/
+	UPROPERTY(EditDefaultsOnly, Category = "Spectating")
+	TSubclassOf<AActor> SpectatingViewpointClass;
+	
 public:
 
 	AFPSGameMode();
