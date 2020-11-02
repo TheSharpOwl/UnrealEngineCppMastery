@@ -31,15 +31,15 @@ AFPSBlackHole::AFPSBlackHole()
 void AFPSBlackHole::OverlapInnerSphere(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Inside the function"));
+	//UE_LOG(LogTemp, Warning, TEXT("Inside the function"));
 	if (OtherActor)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Got the other actor"));
+		//UE_LOG(LogTemp, Warning, TEXT("Got the other actor"));
 		OtherActor->Destroy();
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("Failed"));
+		//UE_LOG(LogTemp, Error, TEXT("Failed"));
 	}
 }
 
