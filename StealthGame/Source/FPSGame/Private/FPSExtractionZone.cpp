@@ -29,7 +29,7 @@ AFPSExtractionZone::AFPSExtractionZone()
 void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Log, TEXT("Overlapped with the extraction zone!"));
+	//UE_LOG(LogTemp, Log, TEXT("Overlapped with the extraction zone!"));
 
 	AFPSCharacter* MyPawn = Cast<AFPSCharacter>(OtherActor);
 	if(MyPawn && MyPawn->bIsCarryingObjective)
