@@ -23,6 +23,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	UPawnSensingComponent* PawnSensingComp;
+
+	UFUNCTION()
+	void OnPawnSeen(APawn* SeenPawn);
 	
 public:	
 	// Called every frame
