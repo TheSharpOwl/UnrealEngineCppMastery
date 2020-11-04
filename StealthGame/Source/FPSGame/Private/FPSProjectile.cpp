@@ -39,6 +39,12 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
-		Destroy();
+		
 	}
+
+	// instigator is used for damage applications (our pawn in this example is who did the damage)
+	// but we need to put a value to this already defined variable (in FPSCharacter in our case, in the fire funciton())
+	MakeNoise(1.0f, Instigator);
+	
+	Destroy();
 }
