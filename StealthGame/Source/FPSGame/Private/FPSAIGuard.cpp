@@ -37,7 +37,29 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 void AFPSAIGuard::OnNoiseHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)
 {
 	DrawDebugSphere(GetWorld(), Location, 32.f, 12, FColor::Red, false, 10.f);
+
+
+	FVector Direction = Location - GetActorLocation();
+	Direction.Normalize();
+
+	// from X generate the rotaion (according to the x axis as a refrernce)
+	// because our character looks in the direction of X axis (usually should be like that)
+	FRotator NewLookAt = FRotationMatrix::MakeFromX(Direction).Rotator();
+	
+	//make the other rotation axis zero because we want him to turn only around z
+	NewLookAt.Pitch = NewLookAt.Roll = 0;
+
+	SetActorRotation(NewLookAt);
+	// reset the timer (in case there's another one still running it should stop for the new one)
+	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrientation);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrientation, this, &AFPSAIGuard::ResetOrientation, 3.f);
 }
+
+void AFPSAIGuard::ResetOrientation()
+{
+	SetActorRotation(OriginalRotation);
+}
+
 // Called every frame
 void AFPSAIGuard::Tick(float DeltaTime)
 {
