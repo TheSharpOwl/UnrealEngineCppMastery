@@ -82,7 +82,7 @@ void AFPSAIGuard::ResetOrientation()
 
 }
 
-void AFPSAIGuard::SetGuradState(EAIState NewState)
+void AFPSAIGuard::SetGuardState(EAIState NewState)
 {
 	if(GuardState == NewState)
 	{
