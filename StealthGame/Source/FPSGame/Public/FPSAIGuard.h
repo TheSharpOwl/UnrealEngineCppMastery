@@ -25,7 +25,6 @@ public:
 	// Sets default values for this character's properties
 	AFPSAIGuard();
 
-protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -55,6 +54,19 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+protected:
+	// Third challenge code
+	UPROPERTY(EditInstanceOnly, Category = "AI")
+	bool bPatrol;
 
+	UPROPERTY(EditInstanceOnly, Category = "AI", meta = (EditCondition = "bPatrol"))
+		AActor* FirstPatrolPoint;
 
+	UPROPERTY(EditInstanceOnly, Category = "AI", meta = (EditCondition = "bPatrol"))
+		AActor* SecondPatrolPoint;
+
+	AActor* CurrentPatrolPoint;
+
+	void MoveToNextPatrolPoint();
 };
