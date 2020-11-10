@@ -6,8 +6,11 @@
 #include "DrawDebugHelpers.h"
 #include "FPSGameMode.h"
 #include "Net/UnrealNetwork.h"
-#include "NavigationSystem/Public/NavigationSystem.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 
+// NOTE : IN CASE OF 25+ The Navigation Code might not work !!!!!!!!!!!!!!!! (check TomLooman Repo Stealth Game
+// with branch 4.25 for that case)
+// 
 // Sets default values
 AFPSAIGuard::AFPSAIGuard()
 {
@@ -32,8 +35,7 @@ void AFPSAIGuard::BeginPlay()
 	OriginalRotation = GetActorRotation();
 
 	if(bPatrol)
-	{
-		
+	{	
 		MoveToNextPatrolPoint();
 	}
 }
@@ -54,6 +56,7 @@ void AFPSAIGuard::OnPawnSeen(APawn* SeenPawn)
 	SetGuardState(EAIState::Alerted);
 
 	AController* Controller = GetController();
+	
 	if (Controller)
 		Controller->StopMovement();
 }
@@ -119,12 +122,11 @@ void AFPSAIGuard::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if(CurrentPatrolPoint)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("calling tick"));
 
 		FVector Delta = GetActorLocation() - CurrentPatrolPoint->GetActorLocation();
 		float DistanceToGoal = Delta.Size();
-
-		if(DistanceToGoal < 10000)
+		
+		if(DistanceToGoal < 50)
 		{
 			MoveToNextPatrolPoint();
 		}
@@ -133,12 +135,11 @@ void AFPSAIGuard::Tick(float DeltaTime)
 
 void AFPSAIGuard::MoveToNextPatrolPoint()
 {
-	UE_LOG(LogTemp, Warning, TEXT("calling move to next patrol point"));
 	if (CurrentPatrolPoint == nullptr || CurrentPatrolPoint == SecondPatrolPoint)
 		CurrentPatrolPoint = FirstPatrolPoint;
 	else
 		CurrentPatrolPoint = SecondPatrolPoint;
 
-	UNavigationSystem::SimpleMoveToActor(GetController(), CurrentPatrolPoint);
+	UAIBlueprintHelperLibrary::SimpleMoveToActor(GetController(), CurrentPatrolPoint);
 }
 
