@@ -48,6 +48,23 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
 
+void AFPSCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// we want to update the movement (looking up and down was not working for example)
+	// so we want to run the animation on the other buys
+	if(!IsLocallyControlled())
+	{
+		// we are rotating the camera one because it is the easiest to rotate such that the other actors rotate well with it
+		FRotator NewRot = CameraComponent->RelativeRotation;
+		// RemoteViewPitch is unit8 so it's compressed, to get it, we need to uncompress it then store it in FRotator
+		NewRot.Pitch = RemoteViewPitch * 360.f/ 255.0f;
+
+		CameraComponent->SetRelativeRotation(NewRot);
+	}
+}
+
 void AFPSCharacter::ServerFire_Implementation()
 {
 	// so practically the projectiles run on the server - no matter who shot them - and clients can see them

@@ -66,6 +66,7 @@ protected:
 	void MoveRight(float Val);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	void Tick(float DeltaTime);
 
 	// reliable = will reach the server for sure (if issues happen it will be late but it will be there)
 	// With validation = should always be for the server option
