@@ -67,6 +67,11 @@ protected:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
+	// reliable = will reach the server for sure (if issues happen it will be late but it will be there)
+	// With validation = should always be for the server option
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire();
+
 public:
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1PComponent; }

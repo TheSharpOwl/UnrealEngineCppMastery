@@ -29,6 +29,12 @@ AFPSProjectile::AFPSProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	//For the mutli-player (the projectile with this line --- only --- , will appear from server to the client only !!
+	// but not the other way around
+	
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 
@@ -42,9 +48,14 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		
 	}
 
-	// instigator is used for damage applications (our pawn in this example is who did the damage)
-	// but we need to put a value to this already defined variable (in FPSCharacter in our case, in the fire funciton())
-	MakeNoise(1.0f, Instigator);
+	// if we are on the server run the AI, otherwise don't 
+	if (Role == ROLE_Authority)
+	{
+		// instigator is used for damage applications (our pawn in this example is who did the damage)
+		// but we need to put a value to this already defined variable (in FPSCharacter in our case, in the fire funciton())
+		MakeNoise(1.0f, Instigator);
+		// also this one because the server should say to clients to destroy actors not do it whenever they like lol
+		Destroy();
+	}
 	
-	Destroy();
 }

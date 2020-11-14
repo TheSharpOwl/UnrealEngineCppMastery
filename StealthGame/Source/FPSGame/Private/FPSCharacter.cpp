@@ -48,9 +48,9 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 }
 
-
-void AFPSCharacter::Fire()
+void AFPSCharacter::ServerFire_Implementation()
 {
+	// so practically the projectiles run on the server - no matter who shot them - and clients can see them
 	// try and fire a projectile
 	if (ProjectileClass)
 	{
@@ -62,10 +62,26 @@ void AFPSCharacter::Fire()
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 		// when ever we fire, tell the projectile which insitigator did that 
 		ActorSpawnParams.Instigator = this;
-		
+
 		// spawn the projectile at the muzzle
 		GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParams);
 	}
+}
+
+bool AFPSCharacter::ServerFire_Validate()
+{
+	return true;
+}
+
+
+void AFPSCharacter::Fire()
+{
+	// this function if called :
+	// from client it will ask the server to run it
+	// from server it will do the normal sutff and just excute
+	ServerFire();
+	
+	
 
 	// try and play the sound if specified
 	if (FireSound)
