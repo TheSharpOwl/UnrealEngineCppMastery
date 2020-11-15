@@ -113,7 +113,7 @@ void AFPSAIGuard::SetGuardState(EAIState NewState)
 
 	GuardState = NewState;
 
-	OnStateChanged(GuardState);
+	OnRep_GuardState();
 }
 
 // Called every frame
@@ -143,3 +143,14 @@ void AFPSAIGuard::MoveToNextPatrolPoint()
 	UAIBlueprintHelperLibrary::SimpleMoveToActor(GetController(), CurrentPatrolPoint);
 }
 
+void AFPSAIGuard::OnRep_GuardState()
+{
+	OnStateChanged(GuardState);
+}
+
+void AFPSAIGuard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSAIGuard, GuardState);
+}

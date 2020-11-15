@@ -44,6 +44,7 @@ public:
 
 	FTimerHandle TimerHandle_ResetOrientation;
 
+	UPROPERTY(ReplicatedUsing = OnRep_GuardState)
 	EAIState GuardState;
 
 	void SetGuardState(EAIState NewState);
@@ -69,4 +70,7 @@ protected:
 	AActor* CurrentPatrolPoint;
 
 	void MoveToNextPatrolPoint();
+
+	UFUNCTION()
+	void OnRep_GuardState();
 };
