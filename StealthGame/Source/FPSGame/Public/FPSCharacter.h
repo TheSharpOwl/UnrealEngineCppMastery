@@ -51,7 +51,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	UAnimSequence* FireAnimation;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Gameplay")
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Gameplay")
 	bool bIsCarryingObjective;
 
 protected:
@@ -73,6 +73,8 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerFire();
 
+	// IDK why putting this or not putting have the same behaviour and no linker errors
+	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const;
 public:
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1PComponent; }

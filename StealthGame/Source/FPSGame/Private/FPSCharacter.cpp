@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/PawnNoiseEmitterComponent.h"
+#include"Net/UnrealNetwork.h"
 
 
 AFPSCharacter::AFPSCharacter()
@@ -136,4 +137,17 @@ void AFPSCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
 	}
+}
+
+// it's like a function to get the properties which are related only to the machine we are running on (read this please)
+// https://docs.unrealengine.com/en-US/API/Runtime/Engine/GameFramework/AActor/GetLifetimeReplicatedProps/index.html
+// 
+void AFPSCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSCharacter, bIsCarryingObjective);
+
+	// this one is faster
+	//DOREPLIFETIME_CONDITION(AFPSCharacter, bIsCarryingObjective, COND_OwnerOnly);
 }
