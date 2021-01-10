@@ -15,15 +15,15 @@ AFPSCharacter::AFPSCharacter()
 	// Create a CameraComponent	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	CameraComponent->SetupAttachment(GetCapsuleComponent());
-	CameraComponent->RelativeLocation = FVector(0, 0, BaseEyeHeight); // Position the camera
+	CameraComponent->SetRelativeLocation(FVector(0, 0, BaseEyeHeight)); // Position the camera
 	CameraComponent->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1PComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh"));
 	Mesh1PComponent->SetupAttachment(CameraComponent);
 	Mesh1PComponent->CastShadow = false;
-	Mesh1PComponent->RelativeRotation = FRotator(2.0f, -15.0f, 5.0f);
-	Mesh1PComponent->RelativeLocation = FVector(0, 0, -160.0f);
+	Mesh1PComponent->SetRelativeRotation(FRotator(2.0f, -15.0f, 5.0f));
+	Mesh1PComponent->SetRelativeLocation(FVector(0, 0, -160.0f));
 
 	// Create a gun mesh component
 	GunMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
@@ -58,7 +58,7 @@ void AFPSCharacter::Tick(float DeltaTime)
 	if(!IsLocallyControlled())
 	{
 		// we are rotating the camera one because it is the easiest to rotate such that the other actors rotate well with it
-		FRotator NewRot = CameraComponent->RelativeRotation;
+		FRotator NewRot = CameraComponent->GetRelativeRotation();
 		// RemoteViewPitch is unit8 so it's compressed, to get it, we need to uncompress it then store it in FRotator
 		NewRot.Pitch = RemoteViewPitch * 360.f/ 255.0f;
 

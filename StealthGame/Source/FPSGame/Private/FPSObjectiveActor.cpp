@@ -42,7 +42,7 @@ void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)
 	PlayEffects();
 
 	// when a collision happens, let only the server destroy
-	if(Role == ROLE_Authority)
+	if(HasAuthority())
 	{
 		AFPSCharacter* MyCharacter = Cast<AFPSCharacter>(OtherActor);
 		if (MyCharacter)

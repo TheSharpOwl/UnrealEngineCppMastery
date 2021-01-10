@@ -49,11 +49,11 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	}
 
 	// if we are on the server run the AI, otherwise don't 
-	if (Role == ROLE_Authority)
+	if (HasAuthority())
 	{
 		// instigator is used for damage applications (our pawn in this example is who did the damage)
 		// but we need to put a value to this already defined variable (in FPSCharacter in our case, in the fire funciton())
-		MakeNoise(1.0f, Instigator);
+		MakeNoise(1.0f, GetInstigator());
 		// also this one because the server should say to clients to destroy actors not do it whenever they like lol
 		Destroy();
 	}
