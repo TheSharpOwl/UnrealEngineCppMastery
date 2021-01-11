@@ -5,6 +5,8 @@
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "FPSGameState.h"
+
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -14,15 +16,18 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+
+	//spawn the current game state (important because of CompleteMission() at the end of this file watch the code!)
+	GameStateClass = AFPSGameState::StaticClass();
 }
 
 void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
 {
 	if(InstigatorPawn)
 	{
-		// we don't need the player controller to be enabelled (you can check the implementation of the function
+		// we don't need the player controller to be enabled (you can check the implementation of the function
 		// disables only game play input stuff
-		InstigatorPawn->DisableInput(nullptr);
+		//InstigatorPawn->DisableInput(nullptr); (putting OnMissionCompelete under instread for networking !)
 
 		if(SpectatingViewpointClass)
 		{
@@ -46,7 +51,15 @@ void AFPSGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
 		{
 			UE_LOG(LogTemp, Error, TEXT("SpectatingViewPointClass is nullptr. Please update GameMode class with valid subclass. Cannot change spectating view actor."));
 		}
+
 	}
+
+	AFPSGameState* GS = GetGameState<AFPSGameState>();
+	if (GS)
+	{
+		GS->MulticastOnMissionComplete(InstigatorPawn, bMissionSuccess);
+	}
+
 	//blueprint funciton
 	OnMissionCompleted(InstigatorPawn, bMissionSuccess);
 
