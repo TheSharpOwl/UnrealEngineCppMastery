@@ -31,6 +31,9 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASCharacter::MoveRight);
+
+	PlayerInputComponent->BindAxis("TurnUp", this, &ASCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookAround", this, &ASCharacter::AddControllerYawInput);
 }
 
 void ASCharacter::MoveForward(float value)
